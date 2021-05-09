@@ -23,6 +23,7 @@ It works perfectly on the Web, macOS app, Tablet also on both Android and iOS ph
 
 ![App UI](/ui.png)
 
+## This change did by main branch
 
 # Git Commands 
 
@@ -43,3 +44,4 @@ It works perfectly on the Web, macOS app, Tablet also on both Android and iOS ph
 
 
 - git diff (You can see all changes that not staged)
+
