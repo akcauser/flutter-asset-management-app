@@ -45,3 +45,4 @@ It works perfectly on the Web, macOS app, Tablet also on both Android and iOS ph
 
 - git diff (You can see all changes that not staged)
 
+- pull request example
