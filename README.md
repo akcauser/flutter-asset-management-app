@@ -27,4 +27,19 @@ It works perfectly on the Web, macOS app, Tablet also on both Android and iOS ph
 # Git Commands 
 
 - git pull
-- 
+- git checkout -b branch-name (branch name can be call feature name)
+- git push -u origin branch-name
+- git status
+- git add .
+- git commit -m "commit message"
+- git push
+- git checkout main 
+- git pull 
+- git checkout branch-name
+- git merge main 
+- git push 
+- git checkout main
+- git merge branch-name
+
+
+- git diff (You can see all changes that not staged)
