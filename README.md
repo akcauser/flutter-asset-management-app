@@ -22,3 +22,9 @@ It works perfectly on the Web, macOS app, Tablet also on both Android and iOS ph
 ![Preview](/gif.gif)
 
 ![App UI](/ui.png)
+
+
+# Git Commands 
+
+- git pull
+- 
