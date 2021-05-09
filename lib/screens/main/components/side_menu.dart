@@ -17,12 +17,22 @@ class SideMenu extends StatelessWidget {
               child: Image.asset("assets/images/logo.png"),
             ),
             DrawerListTile(
-              title: "Home",
+              title: "Admin Dashboard",
+              svgSrc: "assets/icons/menu_dashbord.svg",
+              press: () {},
+            ),
+            DrawerListTile(
+              title: "Employee Dashboard",
               svgSrc: "assets/icons/menu_dashbord.svg",
               press: () {},
             ),
             DrawerListTile(
               title: "Assets",
+              svgSrc: "assets/icons/menu_tran.svg",
+              press: () {},
+            ),
+            DrawerListTile(
+              title: "Requests",
               svgSrc: "assets/icons/menu_tran.svg",
               press: () {},
             ),
