@@ -1,3 +1,4 @@
+import 'package:admin/screens/users/users_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -39,7 +40,12 @@ class SideMenu extends StatelessWidget {
             DrawerListTile(
               title: "Users",
               svgSrc: "assets/icons/menu_task.svg",
-              press: () {},
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UsersScreen()),
+                );
+              },
             ),
           ],
         ),
