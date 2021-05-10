@@ -27,25 +27,95 @@ class SideMenu extends StatelessWidget {
               svgSrc: "assets/icons/menu_dashbord.svg",
               press: () {},
             ),
-            DrawerListTile(
-              title: "Assets",
-              svgSrc: "assets/icons/menu_tran.svg",
-              press: () {},
+            ExpansionTile(
+              title: Text("Assets"),
+              leading: Icon(
+                Icons.computer,
+              ),
+              children: <Widget>[
+                DrawerListTile(
+                  title: "Assign new assets",
+                  svgSrc: "assets/icons/menu_tran.svg",
+                  press: () {},
+                ),
+                DrawerListTile(
+                  title: "Assigned Assets",
+                  svgSrc: "assets/icons/menu_tran.svg",
+                  press: () {},
+                ),
+                DrawerListTile(
+                  title: "My Assets",
+                  svgSrc: "assets/icons/menu_tran.svg",
+                  press: () {},
+                ),
+              ],
             ),
-            DrawerListTile(
-              title: "Requests",
-              svgSrc: "assets/icons/menu_tran.svg",
-              press: () {},
+            ExpansionTile(
+              title: Text("Requests"),
+              leading: Icon(
+                Icons.request_page,
+              ),
+              children: <Widget>[
+                DrawerListTile(
+                  title: "Request new assets",
+                  svgSrc: "assets/icons/menu_tran.svg",
+                  press: () {},
+                ),
+                DrawerListTile(
+                  title: "Request List",
+                  svgSrc: "assets/icons/menu_tran.svg",
+                  press: () {},
+                ),
+                DrawerListTile(
+                  title: "My Request",
+                  svgSrc: "assets/icons/menu_tran.svg",
+                  press: () {},
+                ),
+              ],
             ),
-            DrawerListTile(
-              title: "Users",
-              svgSrc: "assets/icons/menu_task.svg",
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => UsersScreen()),
-                );
-              },
+            ExpansionTile(
+              title: Text("Users"),
+              leading: Icon(
+                Icons.supervised_user_circle,
+              ),
+              children: <Widget>[
+                DrawerListTile(
+                  title: "Create new user",
+                  svgSrc: "assets/icons/menu_tran.svg",
+                  press: () {},
+                ),
+                DrawerListTile(
+                  title: "User List",
+                  svgSrc: "assets/icons/menu_tran.svg",
+                  press: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => UsersScreen()),
+                    );
+                  },
+                ),
+                DrawerListTile(
+                  title: "My Profile",
+                  svgSrc: "assets/icons/menu_tran.svg",
+                  press: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => UsersScreen()),
+                    );
+                  },
+                ),
+              ],
+            ),
+            ListTile(
+              title: Text(
+                "Logout",
+                style: TextStyle(color: Colors.red),
+              ),
+              onTap: () {},
+              leading: Icon(
+                Icons.logout,
+                color: Colors.red,
+              ),
             ),
           ],
         ),
