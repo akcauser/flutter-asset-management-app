@@ -1,12 +1,18 @@
+import 'package:admin/main.dart';
 import 'package:admin/screens/users/users_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class SideMenu extends StatelessWidget {
+class SideMenu extends StatefulWidget {
   const SideMenu({
     Key key,
   }) : super(key: key);
 
+  @override
+  _SideMenuState createState() => _SideMenuState();
+}
+
+class _SideMenuState extends State<SideMenu> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -80,29 +86,18 @@ class SideMenu extends StatelessWidget {
               ),
               children: <Widget>[
                 DrawerListTile(
-                  title: "Create new user",
-                  svgSrc: "assets/icons/menu_tran.svg",
-                  press: () {},
-                ),
-                DrawerListTile(
                   title: "User List",
                   svgSrc: "assets/icons/menu_tran.svg",
                   press: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => UsersScreen()),
-                    );
+                    setState(() {
+                      streamController.add(UsersScreen());
+                    });
                   },
                 ),
                 DrawerListTile(
                   title: "My Profile",
                   svgSrc: "assets/icons/menu_tran.svg",
-                  press: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => UsersScreen()),
-                    );
-                  },
+                  press: () {},
                 ),
               ],
             ),
