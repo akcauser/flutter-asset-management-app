@@ -9,28 +9,14 @@ import '../../constants.dart';
 import '../layouts/side_menu.dart';
 
 class MainScreen extends StatefulWidget {
-  MainScreen(this.stream);
-  final Stream<Widget> stream;
+  // MainScreen(this.stream);
+  // final Stream<Widget> stream;
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
   Widget content = DashboardScreen();
-  @override
-  void initState() {
-    super.initState();
-    widget.stream.listen((index) {
-      mySetState(index);
-    });
-  }
-
-  void mySetState(Widget index) {
-    setState(() {
-      content = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

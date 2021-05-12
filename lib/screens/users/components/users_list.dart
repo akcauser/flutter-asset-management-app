@@ -1,4 +1,3 @@
-import 'package:admin/models/RecentFile.dart';
 import 'package:admin/models/User.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -6,15 +5,19 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../constants.dart';
 
-class UsersList extends StatelessWidget {
+class UsersList extends StatefulWidget {
   UsersList({
     Key key,
   }) : super(key: key);
 
+  @override
+  _UsersListState createState() => _UsersListState();
+}
+
+class _UsersListState extends State<UsersList> {
   CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
 
-  // ekleme
   Future<void> addItem(text) {
     return usersCollection
         .add({'text': text})
@@ -22,7 +25,6 @@ class UsersList extends StatelessWidget {
         .catchError((error) => print('error occured'));
   }
 
-  // silme
   Future<void> deleteItem(itemReference) {
     return usersCollection
         .doc(itemReference)
@@ -33,10 +35,18 @@ class UsersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: usersCollection.snapshots(),
+    return StreamBuilder<QuerySnapshot>(
+        stream: usersCollection.snapshots(includeMetadataChanges: true),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) return LinearProgressIndicator();
+          if (snapshot.hasError) {
+            print(snapshot.error);
+            return Text('Something went wrong');
+          }
+
+          if (!snapshot.hasData ||
+              snapshot.connectionState == ConnectionState.waiting)
+            return LinearProgressIndicator();
+
           return Container(
             padding: EdgeInsets.all(defaultPadding),
             decoration: BoxDecoration(
@@ -47,7 +57,7 @@ class UsersList extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "My Active Assets",
+                  "Users",
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
                 SizedBox(
@@ -57,16 +67,16 @@ class UsersList extends StatelessWidget {
                     columnSpacing: defaultPadding,
                     columns: [
                       DataColumn(
-                        label: Text("Asset Name"),
+                        label: Text("User"),
                       ),
                       DataColumn(
-                        label: Text("Date"),
+                        label: Text("Email"),
                       ),
                       DataColumn(
                         label: Text("Size"),
                       ),
                     ],
-                    rows: _buildList(context, snapshot.data.docs),
+                    rows: _createRows(snapshot.data),
                   ),
                 ),
               ],
@@ -76,13 +86,16 @@ class UsersList extends StatelessWidget {
   }
 }
 
-List<DataRow> _buildList(
-    BuildContext context, List<DocumentSnapshot> snapshot) {
-  return snapshot.map((data) => _buildListItem(context, data)).toList();
+List<DataRow> _createRows(QuerySnapshot snapshot) {
+  List<DataRow> newList =
+      snapshot.docs.map((DocumentSnapshot documentSnapshot) {
+    return _createRow(documentSnapshot);
+  }).toList();
+
+  return newList;
 }
 
-DataRow _buildListItem(
-    BuildContext context, DocumentSnapshot documentSnapshot) {
+DataRow _createRow(DocumentSnapshot documentSnapshot) {
   final user = User.fromSnapshot(documentSnapshot);
   return DataRow(
     cells: [
@@ -96,12 +109,12 @@ DataRow _buildListItem(
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-              child: Text(user.email),
+              child: Text(user.name),
             ),
           ],
         ),
       ),
-      DataCell(Text(user.name)),
+      DataCell(Text(user.email)),
       DataCell(Text(user.role)),
     ],
   );

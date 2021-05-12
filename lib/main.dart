@@ -1,14 +1,19 @@
 import 'package:admin/constants.dart';
 import 'package:admin/controllers/MenuController.dart';
 import 'package:admin/routes/routes.dart';
-import 'package:admin/screens/main/main_screen.dart';
+import 'package:admin/screens/layouts/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'dart:async';
+//import 'dart:async';
 
-StreamController<Widget> streamController = StreamController<Widget>();
+import 'screens/dashboard/dashboard_screen.dart';
+import 'screens/dashboard/dashboard_screen.dart';
+import 'screens/dashboard/dashboard_screen.dart';
+import 'screens/main/main_screen.dart';
+
+//StreamController<Widget> streamController = StreamController<Widget>();
 void main() async {
   await Firebase.initializeApp();
   runApp(MyApp());
@@ -27,15 +32,8 @@ class MyApp extends StatelessWidget {
             .apply(bodyColor: Colors.white),
         canvasColor: secondaryColor,
       ),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => MenuController(),
-          ),
-        ],
-        child: MainScreen(streamController.stream),
-      ),
-      // routes: getRoutes(),
+      home: DashboardScreen(),
+      routes: getRoutes(),
     );
   }
 }

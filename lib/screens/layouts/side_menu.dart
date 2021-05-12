@@ -1,4 +1,5 @@
 import 'package:admin/main.dart';
+import 'package:admin/routes/routes.dart';
 import 'package:admin/screens/users/users_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -26,7 +27,9 @@ class _SideMenuState extends State<SideMenu> {
             DrawerListTile(
               title: "Admin Dashboard",
               svgSrc: "assets/icons/menu_dashbord.svg",
-              press: () {},
+              press: () {
+                Navigator.pushReplacementNamed(context, routes["home"]);
+              },
             ),
             DrawerListTile(
               title: "Employee Dashboard",
@@ -89,9 +92,7 @@ class _SideMenuState extends State<SideMenu> {
                   title: "User List",
                   svgSrc: "assets/icons/menu_tran.svg",
                   press: () {
-                    setState(() {
-                      streamController.add(UsersScreen());
-                    });
+                    Navigator.pushReplacementNamed(context, routes["users"]);
                   },
                 ),
                 DrawerListTile(
