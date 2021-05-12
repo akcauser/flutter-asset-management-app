@@ -1,7 +1,6 @@
 import 'package:admin/models/User.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../../constants.dart';
 
@@ -17,21 +16,6 @@ class UsersList extends StatefulWidget {
 class _UsersListState extends State<UsersList> {
   CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
-
-  Future<void> addItem(text) {
-    return usersCollection
-        .add({'text': text})
-        .then((value) => print('item added'))
-        .catchError((error) => print('error occured'));
-  }
-
-  Future<void> deleteItem(itemReference) {
-    return usersCollection
-        .doc(itemReference)
-        .delete()
-        .then((value) => print('item deleted'))
-        .catchError((error) => print('error occured'));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,16 +80,29 @@ List<DataRow> _createRows(QuerySnapshot snapshot) {
 }
 
 DataRow _createRow(DocumentSnapshot documentSnapshot) {
+  CollectionReference usersCollection =
+      FirebaseFirestore.instance.collection('users');
+
+  Future<void> deleteItem(itemReference) {
+    return usersCollection
+        .doc(itemReference)
+        .delete()
+        .then((value) => print('item deleted'))
+        .catchError((error) => print('error occured'));
+  }
+
   final user = User.fromSnapshot(documentSnapshot);
   return DataRow(
     cells: [
       DataCell(
         Row(
           children: [
-            SvgPicture.asset(
-              user.image,
-              height: 30,
-              width: 30,
+            IconButton(
+              icon: Icon(Icons.delete),
+              color: Colors.red,
+              onPressed: () {
+                deleteItem(user.reference.id);
+              },
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: defaultPadding),

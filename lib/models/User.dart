@@ -1,7 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  String image, email, name, role;
+  String email, name, role;
+  String image = 'assets/icons/xd_file.svg';
+
+  User(email, name, role) {
+    this.email = email;
+    this.name = name;
+    this.role = role;
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -22,7 +29,7 @@ class User {
     return mapping;
   }
 
-  final DocumentReference reference;
+  DocumentReference reference;
 
   User.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['image'] != null),
