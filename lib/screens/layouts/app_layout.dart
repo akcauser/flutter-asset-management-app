@@ -25,7 +25,6 @@ class _AppLayoutState extends State<AppLayout> {
         ),
       ],
       child: Scaffold(
-        key: context.read<MenuController>().scaffoldKey,
         drawer: SideMenu(),
         body: SafeArea(
           child: Row(
