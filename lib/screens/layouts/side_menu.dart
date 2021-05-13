@@ -1,6 +1,6 @@
-import 'package:admin/main.dart';
 import 'package:admin/routes/routes.dart';
-import 'package:admin/screens/users/users_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -14,6 +14,33 @@ class SideMenu extends StatefulWidget {
 }
 
 class _SideMenuState extends State<SideMenu> {
+  var isAdmin;
+  var isLogged;
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    // look firebase
+    isAdmin = false;
+    isLogged = false;
+    if (auth.currentUser != null) {
+      isLogged = true;
+      var email = auth.currentUser.email;
+      FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .where('role', isEqualTo: "Admin")
+          .get()
+          .then((snapshot) {
+        print('test');
+        setState(() {
+          isAdmin = true;
+        });
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -24,15 +51,18 @@ class _SideMenuState extends State<SideMenu> {
             DrawerHeader(
               child: Image.asset("assets/images/logo.png"),
             ),
-            DrawerListTile(
-              title: "Admin Dashboard",
-              svgSrc: "assets/icons/menu_dashbord.svg",
-              press: () {
-                Navigator.pushReplacementNamed(context, routes["home"]);
-              },
+            Visibility(
+              child: DrawerListTile(
+                title: "Admin Dashboard",
+                svgSrc: "assets/icons/menu_dashbord.svg",
+                press: () {
+                  Navigator.pushReplacementNamed(context, routes["home"]);
+                },
+              ),
+              visible: isAdmin,
             ),
             DrawerListTile(
-              title: "Employee Dashboard",
+              title: "My Dashboard",
               svgSrc: "assets/icons/menu_dashbord.svg",
               press: () {},
             ),
@@ -42,15 +72,13 @@ class _SideMenuState extends State<SideMenu> {
                 Icons.computer,
               ),
               children: <Widget>[
-                DrawerListTile(
-                  title: "Assign new assets",
-                  svgSrc: "assets/icons/menu_tran.svg",
-                  press: () {},
-                ),
-                DrawerListTile(
-                  title: "Assigned Assets",
-                  svgSrc: "assets/icons/menu_tran.svg",
-                  press: () {},
+                Visibility(
+                  child: DrawerListTile(
+                    title: "Assigned Assets",
+                    svgSrc: "assets/icons/menu_tran.svg",
+                    press: () {},
+                  ),
+                  visible: isAdmin,
                 ),
                 DrawerListTile(
                   title: "My Assets",
@@ -65,15 +93,13 @@ class _SideMenuState extends State<SideMenu> {
                 Icons.request_page,
               ),
               children: <Widget>[
-                DrawerListTile(
-                  title: "Request new assets",
-                  svgSrc: "assets/icons/menu_tran.svg",
-                  press: () {},
-                ),
-                DrawerListTile(
-                  title: "Request List",
-                  svgSrc: "assets/icons/menu_tran.svg",
-                  press: () {},
+                Visibility(
+                  child: DrawerListTile(
+                    title: "Request List",
+                    svgSrc: "assets/icons/menu_tran.svg",
+                    press: () {},
+                  ),
+                  visible: isAdmin,
                 ),
                 DrawerListTile(
                   title: "My Request",
@@ -88,12 +114,15 @@ class _SideMenuState extends State<SideMenu> {
                 Icons.supervised_user_circle,
               ),
               children: <Widget>[
-                DrawerListTile(
-                  title: "User List",
-                  svgSrc: "assets/icons/menu_tran.svg",
-                  press: () {
-                    Navigator.pushReplacementNamed(context, routes["users"]);
-                  },
+                Visibility(
+                  child: DrawerListTile(
+                    title: "User List",
+                    svgSrc: "assets/icons/menu_tran.svg",
+                    press: () {
+                      Navigator.pushReplacementNamed(context, routes["users"]);
+                    },
+                  ),
+                  visible: isAdmin,
                 ),
                 DrawerListTile(
                   title: "My Profile",
@@ -107,7 +136,10 @@ class _SideMenuState extends State<SideMenu> {
                 "Logout",
                 style: TextStyle(color: Colors.red),
               ),
-              onTap: () {},
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushReplacementNamed(context, routes["login"]);
+              },
               leading: Icon(
                 Icons.logout,
                 color: Colors.red,

@@ -1,5 +1,7 @@
 import 'package:admin/constants.dart';
 import 'package:admin/routes/routes.dart';
+import 'package:admin/screens/auth/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,8 +28,18 @@ class MyApp extends StatelessWidget {
             .apply(bodyColor: Colors.white),
         canvasColor: secondaryColor,
       ),
-      home: DashboardScreen(),
+      home: _loginControl(),
       routes: getRoutes(),
     );
+  }
+
+  _loginControl() {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    if (auth.currentUser == null) {
+      return LoginScreen();
+    }
+
+    print(auth.currentUser.uid);
   }
 }
