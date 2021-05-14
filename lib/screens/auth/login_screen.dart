@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 25,
                       ),
                       Text(
-                        "Fırtınalar",
+                        "Fırtınalar Asset",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 50,

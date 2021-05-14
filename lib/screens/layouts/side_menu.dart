@@ -76,7 +76,9 @@ class _SideMenuState extends State<SideMenu> {
                   child: DrawerListTile(
                     title: "Assigned Assets",
                     svgSrc: "assets/icons/menu_tran.svg",
-                    press: () {},
+                    press: () {
+                      Navigator.pushReplacementNamed(context, routes["assets"]);
+                    },
                   ),
                   visible: isAdmin,
                 ),

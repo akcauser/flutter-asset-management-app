@@ -1,57 +1,58 @@
-import 'package:admin/models/Role.dart';
-import 'package:admin/models/User.dart';
+import 'package:admin/models/Asset.dart';
+import 'package:admin/models/AssetType.dart';
+import 'package:admin/screens/assets/components/digital_assets_list.dart';
+import 'package:admin/screens/assets/components/phyical_assets_list.dart';
 import 'package:admin/screens/dashboard/components/storage_details.dart';
 import 'package:admin/screens/layouts/app_layout.dart';
-import 'package:admin/screens/users/components/users_list.dart';
+import 'package:admin/screens/assets/components/human_assets_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
 import '../../responsive.dart';
 
-class UsersScreen extends StatefulWidget {
+class AssetsScreen extends StatefulWidget {
   @override
-  _UsersScreenState createState() => _UsersScreenState();
+  _AssetsScreenState createState() => _AssetsScreenState();
 }
 
-class _UsersScreenState extends State<UsersScreen> {
+class _AssetsScreenState extends State<AssetsScreen> {
   final _shoppingItemAddFormkey = GlobalKey<FormState>();
-  CollectionReference usersCollection =
-      FirebaseFirestore.instance.collection('users');
+  CollectionReference assetsCollection =
+      FirebaseFirestore.instance.collection('assets');
 
-  Future<void> addItem(User user) {
-    return usersCollection
+  Future<void> addItem(Asset asset) {
+    return assetsCollection
         .add({
-          'image': user.image,
-          'email': user.email,
-          'name': user.name,
-          'role': user.role
+          'name': asset.name,
+          'type': asset.type,
+          'serialNumber': asset.serialNumber,
+          'employeeId': asset.userReference,
+          'createdAt': asset.createdAt,
         })
         .then((value) => print('item added'))
         .catchError((error) => print('error occured'));
   }
 
   String _selectedRole;
-  var _roles = List<DropdownMenuItem>();
-  _loadRoles() {
-    Role.getRoles().forEach((role) {
-      _roles.add(DropdownMenuItem(
-        child: Text(role),
-        value: role,
+  var _assetTypes = List<DropdownMenuItem>();
+  _loadAssetTypes() {
+    AssetType.getAssetTypes().forEach((assetType) {
+      _assetTypes.add(DropdownMenuItem(
+        child: Text(assetType),
+        value: assetType,
       ));
     });
   }
 
   void initState() {
     super.initState();
-    _loadRoles();
-    print(_roles);
+    _loadAssetTypes();
+    print(_assetTypes);
   }
 
   Future<String> createAlertDialog(BuildContext context) {
     TextEditingController _userNameFieldController =
-        new TextEditingController();
-    TextEditingController _userEmailFieldController =
         new TextEditingController();
 
     return showDialog(
@@ -59,7 +60,7 @@ class _UsersScreenState extends State<UsersScreen> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            'New User',
+            'Assign New Asset',
             style: TextStyle(
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
@@ -83,23 +84,10 @@ class _UsersScreenState extends State<UsersScreen> {
                       return null;
                     },
                   ),
-                  TextFormField(
-                    controller: _userEmailFieldController,
-                    decoration: InputDecoration(
-                      hintText: "Enter email",
-                      border: InputBorder.none,
-                    ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return "Please enter email";
-                      }
-                      return null;
-                    },
-                  ),
                   DropdownButtonFormField(
-                    items: _roles,
+                    items: _assetTypes,
                     value: _selectedRole,
-                    hint: Text("Role"),
+                    hint: Text("Type"),
                     onChanged: (value) {
                       setState(() {
                         _selectedRole = value;
@@ -115,18 +103,21 @@ class _UsersScreenState extends State<UsersScreen> {
               color: Colors.green,
               onPressed: () {
                 if (_shoppingItemAddFormkey.currentState.validate()) {
-                  User user = new User(
-                    _userEmailFieldController.text.toString(),
-                    _userNameFieldController.text.toString(),
-                    _selectedRole,
+                  Asset asset = new Asset(
+                    'name',
+                    'type',
+                    'serialNumber',
+                    'employeeId',
+                    'licenseKey',
+                    'humanId',
                   );
-                  addItem(user);
+                  addItem(asset);
                   // Alert dialog close
                   Navigator.of(context).pop();
                 }
               },
               elevation: 5.0,
-              child: Text('Add'),
+              child: Text('Assing'),
             )
           ],
         );
@@ -156,18 +147,27 @@ class _UsersScreenState extends State<UsersScreen> {
                     createAlertDialog(context);
                   },
                   icon: Icon(Icons.add),
-                  label: Text("Add New"),
+                  label: Text("Assign New Asset"),
                 ),
                 SizedBox(height: defaultPadding),
-                UsersList(),
+                PhysicalAssetsList(),
+                SizedBox(height: defaultPadding),
+                DigitalAssetsList(),
+                SizedBox(height: defaultPadding),
+                HumanAssetsList(),
                 if (Responsive.isMobile(context))
                   SizedBox(height: defaultPadding),
-                SizedBox(height: defaultPadding),
-                //StarageDetails()
+                if (Responsive.isMobile(context)) StarageDetails(),
               ],
             ),
           ),
           if (!Responsive.isMobile(context)) SizedBox(width: defaultPadding),
+          // On Mobile means if the screen is less than 850 we dont want to show it
+          if (!Responsive.isMobile(context))
+            Expanded(
+              flex: 2,
+              child: StarageDetails(),
+            ),
         ],
       ),
     );

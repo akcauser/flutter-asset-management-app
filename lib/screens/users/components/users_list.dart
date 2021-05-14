@@ -46,21 +46,24 @@ class _UsersListState extends State<UsersList> {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: DataTable(
-                    horizontalMargin: 0,
-                    columnSpacing: defaultPadding,
-                    columns: [
-                      DataColumn(
-                        label: Text("User"),
-                      ),
-                      DataColumn(
-                        label: Text("Email"),
-                      ),
-                      DataColumn(
-                        label: Text("Size"),
-                      ),
-                    ],
-                    rows: _createRows(snapshot.data),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      horizontalMargin: 0,
+                      columnSpacing: defaultPadding,
+                      columns: [
+                        DataColumn(
+                          label: Text("Name"),
+                        ),
+                        DataColumn(
+                          label: Text("Email"),
+                        ),
+                        DataColumn(
+                          label: Text("Role"),
+                        ),
+                      ],
+                      rows: _createRows(snapshot.data),
+                    ),
                   ),
                 ),
               ],

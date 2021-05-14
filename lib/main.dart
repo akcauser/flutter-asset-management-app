@@ -7,8 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 //import 'dart:async';
 
-import 'screens/dashboard/dashboard_screen.dart';
-
 //StreamController<Widget> streamController = StreamController<Widget>();
 void main() async {
   await Firebase.initializeApp();
