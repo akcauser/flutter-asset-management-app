@@ -1,29 +1,47 @@
 import 'package:admin/models/Asset.dart';
-import 'package:admin/models/User.dart';
+import 'package:admin/models/User.dart' as MyUser;
 import 'package:admin/responsive.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 
-class HumanAssetsList extends StatefulWidget {
-  HumanAssetsList({
+class MyHumanAssetsList extends StatefulWidget {
+  MyHumanAssetsList({
     Key key,
   }) : super(key: key);
 
   @override
-  _HumanAssetsListState createState() => _HumanAssetsListState();
+  _MyHumanAssetsListState createState() => _MyHumanAssetsListState();
 }
 
-class _HumanAssetsListState extends State<HumanAssetsList> {
+class _MyHumanAssetsListState extends State<MyHumanAssetsList> {
   CollectionReference assetsCollection =
       FirebaseFirestore.instance.collection('assets');
+  FirebaseAuth auth = FirebaseAuth.instance;
+  var _userReference;
+  @override
+  void initState() {
+    super.initState();
+    if (auth.currentUser != null) {
+      var email = auth.currentUser.email;
+      FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .get()
+          .then((snapshot) {
+        _userReference = snapshot.docs.first.reference;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         stream: assetsCollection
             .where('type', isEqualTo: 'Human')
+            .where('userReference', isEqualTo: _userReference)
             .snapshots(includeMetadataChanges: true),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -66,6 +84,9 @@ class _HumanAssetsListState extends State<HumanAssetsList> {
                         ),
                         DataColumn(
                           label: Text("Human"),
+                        ),
+                        DataColumn(
+                          label: Text("Employee"),
                         ),
                         DataColumn(
                           label: Text("Time"),
@@ -138,7 +159,23 @@ DataRow _createRow(DocumentSnapshot documentSnapshot) {
                   snapshot.connectionState == ConnectionState.waiting)
                 return CircularProgressIndicator();
 
-              return Text(User.fromSnapshot(snapshot.data).name);
+              return Text(MyUser.User.fromSnapshot(snapshot.data).name);
+            }),
+      ),
+      DataCell(
+        StreamBuilder<DocumentSnapshot>(
+            stream: asset.userReference.snapshots(),
+            builder: (BuildContext context,
+                AsyncSnapshot<DocumentSnapshot> snapshot) {
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return Text("-");
+              }
+              if (!snapshot.hasData ||
+                  snapshot.connectionState == ConnectionState.waiting)
+                return CircularProgressIndicator();
+
+              return Text(MyUser.User.fromSnapshot(snapshot.data).name);
             }),
       ),
       DataCell(Text(asset.createdAt.toDate().toString())),

@@ -1,4 +1,5 @@
 import 'package:admin/screens/assets/assets_screen.dart';
+import 'package:admin/screens/my_assets/my_assets_screen.dart';
 import 'package:admin/screens/auth/login_screen.dart';
 import 'package:admin/screens/users/users_screen.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ final routes = <String, String>{
   "users": "/users",
   "login": "/login",
   "assets": "/assets",
+  "my_assets": "/my_assets"
 };
 
 getRoutes() {
@@ -19,5 +21,6 @@ getRoutes() {
     routes["users"]: (context) => new UsersScreen(),
     routes["login"]: (context) => new LoginScreen(),
     routes["assets"]: (context) => new AssetsScreen(),
+    routes["my_assets"]: (context) => new MyAssetsScreen(),
   };
 }

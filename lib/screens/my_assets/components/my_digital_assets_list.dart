@@ -1,29 +1,48 @@
 import 'package:admin/models/Asset.dart';
-import 'package:admin/models/User.dart';
+import 'package:admin/models/User.dart' as MyUser;
 import 'package:admin/responsive.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 
-class HumanAssetsList extends StatefulWidget {
-  HumanAssetsList({
+class MyDigitalAssetsList extends StatefulWidget {
+  MyDigitalAssetsList({
     Key key,
   }) : super(key: key);
 
   @override
-  _HumanAssetsListState createState() => _HumanAssetsListState();
+  _MyDigitalAssetsListState createState() => _MyDigitalAssetsListState();
 }
 
-class _HumanAssetsListState extends State<HumanAssetsList> {
+class _MyDigitalAssetsListState extends State<MyDigitalAssetsList> {
   CollectionReference assetsCollection =
       FirebaseFirestore.instance.collection('assets');
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+  var _userReference;
+  @override
+  void initState() {
+    super.initState();
+    if (auth.currentUser != null) {
+      var email = auth.currentUser.email;
+      FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .get()
+          .then((snapshot) {
+        _userReference = snapshot.docs.first.reference;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         stream: assetsCollection
-            .where('type', isEqualTo: 'Human')
+            .where('type', isEqualTo: 'Digital')
+            .where('userReference', isEqualTo: _userReference)
             .snapshots(includeMetadataChanges: true),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -45,7 +64,7 @@ class _HumanAssetsListState extends State<HumanAssetsList> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Human Assets",
+                  "Digital Assets",
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
                 SizedBox(
@@ -65,7 +84,7 @@ class _HumanAssetsListState extends State<HumanAssetsList> {
                           label: Text("Type"),
                         ),
                         DataColumn(
-                          label: Text("Human"),
+                          label: Text("License Key"),
                         ),
                         DataColumn(
                           label: Text("Time"),
@@ -124,23 +143,7 @@ DataRow _createRow(DocumentSnapshot documentSnapshot) {
         ),
       ),
       DataCell(Text(asset.type)),
-      DataCell(
-        StreamBuilder<DocumentSnapshot>(
-            stream: asset.humanReference.snapshots(),
-            builder: (BuildContext context,
-                AsyncSnapshot<DocumentSnapshot> snapshot) {
-              if (snapshot.hasError) {
-                print(snapshot.error);
-                return Text("-");
-              }
-
-              if (!snapshot.hasData ||
-                  snapshot.connectionState == ConnectionState.waiting)
-                return CircularProgressIndicator();
-
-              return Text(User.fromSnapshot(snapshot.data).name);
-            }),
-      ),
+      DataCell(Text(asset.licenseKey ?? "-")),
       DataCell(Text(asset.createdAt.toDate().toString())),
     ],
   );

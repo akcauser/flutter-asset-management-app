@@ -77,7 +77,10 @@ class _SideMenuState extends State<SideMenu> {
                     title: "Assigned Assets",
                     svgSrc: "assets/icons/menu_tran.svg",
                     press: () {
-                      Navigator.pushReplacementNamed(context, routes["assets"]);
+                      Navigator.pushReplacementNamed(
+                        context,
+                        routes["assets"],
+                      );
                     },
                   ),
                   visible: isAdmin,
@@ -85,7 +88,12 @@ class _SideMenuState extends State<SideMenu> {
                 DrawerListTile(
                   title: "My Assets",
                   svgSrc: "assets/icons/menu_tran.svg",
-                  press: () {},
+                  press: () {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      routes["my_assets"],
+                    );
+                  },
                 ),
               ],
             ),

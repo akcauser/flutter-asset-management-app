@@ -2,7 +2,7 @@ import 'package:admin/models/Asset.dart';
 import 'package:admin/models/AssetType.dart';
 import 'package:admin/models/User.dart';
 import 'package:admin/screens/assets/components/digital_assets_list.dart';
-import 'package:admin/screens/assets/components/phyical_assets_list.dart';
+import 'package:admin/screens/assets/components/physical_assets_list.dart';
 import 'package:admin/screens/dashboard/components/storage_details.dart';
 import 'package:admin/screens/layouts/app_layout.dart';
 import 'package:admin/screens/assets/components/human_assets_list.dart';
