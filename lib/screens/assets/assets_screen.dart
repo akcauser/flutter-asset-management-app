@@ -1,5 +1,6 @@
 import 'package:admin/models/Asset.dart';
 import 'package:admin/models/AssetType.dart';
+import 'package:admin/models/User.dart';
 import 'package:admin/screens/assets/components/digital_assets_list.dart';
 import 'package:admin/screens/assets/components/phyical_assets_list.dart';
 import 'package:admin/screens/dashboard/components/storage_details.dart';
@@ -20,21 +21,31 @@ class _AssetsScreenState extends State<AssetsScreen> {
   final _shoppingItemAddFormkey = GlobalKey<FormState>();
   CollectionReference assetsCollection =
       FirebaseFirestore.instance.collection('assets');
+  CollectionReference usersCollection =
+      FirebaseFirestore.instance.collection('users');
 
   Future<void> addItem(Asset asset) {
+    var data = {
+      'name': asset.name,
+      'type': asset.type,
+      'userReference': asset.userReference,
+      'createdAt': asset.createdAt,
+    };
+    if (asset.type == "Physical") {
+      data.putIfAbsent("serialNumber", () => asset.serialNumber);
+    } else if (asset.type == "Digital") {
+      data.putIfAbsent("licenseKey", () => asset.licenseKey);
+    } else {
+      data.putIfAbsent("humanReference", () => asset.humanReference);
+    }
+
     return assetsCollection
-        .add({
-          'name': asset.name,
-          'type': asset.type,
-          'serialNumber': asset.serialNumber,
-          'employeeId': asset.userReference,
-          'createdAt': asset.createdAt,
-        })
+        .add(data)
         .then((value) => print('item added'))
         .catchError((error) => print('error occured'));
   }
 
-  String _selectedRole;
+  String _selectedType;
   var _assetTypes = List<DropdownMenuItem>();
   _loadAssetTypes() {
     AssetType.getAssetTypes().forEach((assetType) {
@@ -45,14 +56,33 @@ class _AssetsScreenState extends State<AssetsScreen> {
     });
   }
 
+  var _selectedEmployee;
+  var _selectedHuman;
+  var _users = List<DropdownMenuItem>();
+  _loadUsers() {
+    usersCollection.get().then((querySnapshot) {
+      querySnapshot.docs.forEach((result) {
+        _users.add(DropdownMenuItem(
+          child: Text(User.fromSnapshot(result).name),
+          value: User.fromSnapshot(result).reference,
+        ));
+      });
+    });
+  }
+
   void initState() {
     super.initState();
+    _loadUsers();
     _loadAssetTypes();
     print(_assetTypes);
   }
 
   Future<String> createAlertDialog(BuildContext context) {
-    TextEditingController _userNameFieldController =
+    TextEditingController _assetNameFieldController =
+        new TextEditingController();
+    TextEditingController _physicalAssetSerialNumberFieldController =
+        new TextEditingController();
+    TextEditingController _digitalAssetLicenseKeyFieldController =
         new TextEditingController();
 
     return showDialog(
@@ -71,10 +101,29 @@ class _AssetsScreenState extends State<AssetsScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  DropdownButtonFormField(
+                    items: _assetTypes,
+                    value: _selectedType,
+                    hint: Text("Select Type"),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedType = value;
+                        Navigator.of(context).pop();
+                      });
+                    },
+                  ),
+                  DropdownButtonFormField(
+                    items: _users,
+                    value: _selectedEmployee,
+                    hint: Text("Select Employee"),
+                    onChanged: (value) {
+                      _selectedEmployee = value;
+                    },
+                  ),
                   TextFormField(
-                    controller: _userNameFieldController,
+                    controller: _assetNameFieldController,
                     decoration: InputDecoration(
-                      hintText: "Enter name",
+                      hintText: "Enter asset name",
                       border: InputBorder.none,
                     ),
                     validator: (value) {
@@ -84,15 +133,48 @@ class _AssetsScreenState extends State<AssetsScreen> {
                       return null;
                     },
                   ),
-                  DropdownButtonFormField(
-                    items: _assetTypes,
-                    value: _selectedRole,
-                    hint: Text("Type"),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedRole = value;
-                      });
-                    },
+                  Visibility(
+                    visible: _selectedType == "Physical",
+                    child: TextFormField(
+                      controller: _physicalAssetSerialNumberFieldController,
+                      decoration: InputDecoration(
+                        hintText: "Enter serial number",
+                        border: InputBorder.none,
+                      ),
+                      validator: (value) {
+                        if (_selectedType == 'Physical' && value.isEmpty) {
+                          return "Please enter serial number";
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: _selectedType == "Digital",
+                    child: TextFormField(
+                      controller: _digitalAssetLicenseKeyFieldController,
+                      decoration: InputDecoration(
+                        hintText: "Enter license key",
+                        border: InputBorder.none,
+                      ),
+                      validator: (value) {
+                        if (_selectedType == 'Physical' && value.isEmpty) {
+                          return "Please enter license key";
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: _selectedType == "Human",
+                    child: DropdownButtonFormField(
+                      items: _users,
+                      value: _selectedHuman,
+                      hint: Text("Human"),
+                      onChanged: (value) {
+                        _selectedHuman = value;
+                      },
+                    ),
                   )
                 ],
               ),
@@ -104,12 +186,12 @@ class _AssetsScreenState extends State<AssetsScreen> {
               onPressed: () {
                 if (_shoppingItemAddFormkey.currentState.validate()) {
                   Asset asset = new Asset(
-                    'name',
-                    'type',
-                    'serialNumber',
-                    'employeeId',
-                    'licenseKey',
-                    'humanId',
+                    _assetNameFieldController.text.toString(),
+                    _selectedType,
+                    _physicalAssetSerialNumberFieldController.text.toString(),
+                    _selectedEmployee,
+                    _digitalAssetLicenseKeyFieldController.text.toString(),
+                    _selectedHuman,
                   );
                   addItem(asset);
                   // Alert dialog close

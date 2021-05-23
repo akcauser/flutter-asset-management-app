@@ -1,4 +1,5 @@
 import 'package:admin/models/User.dart';
+import 'package:admin/responsive.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -45,9 +46,11 @@ class _UsersListState extends State<UsersList> {
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
                 SizedBox(
-                  width: double.infinity,
+                  width: double.maxFinite,
                   child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
+                    scrollDirection: Responsive.isMobile(context)
+                        ? Axis.horizontal
+                        : Axis.vertical,
                     child: DataTable(
                       horizontalMargin: 0,
                       columnSpacing: defaultPadding,

@@ -8,7 +8,7 @@ class Asset {
   String licenseKey;
   DocumentReference humanReference;
 
-  Asset(name, type, serialNumber, employeeId, licenseKey, humanReference) {
+  Asset(name, type, serialNumber, userReference, licenseKey, humanReference) {
     this.name = name;
     this.type = type;
     this.userReference = userReference;
@@ -22,7 +22,7 @@ class Asset {
     return {
       'name': name,
       'type': type,
-      'employeeId': userReference,
+      'userReference': userReference,
       'createdAt': createdAt,
       'serialNumber': serialNumber,
       'licenseKey': licenseKey,
@@ -40,7 +40,10 @@ class Asset {
         name = map['name'],
         type = map['type'],
         userReference = map['userReference'],
-        createdAt = map['createdAt'];
+        createdAt = map['createdAt'],
+        licenseKey = map['licenseKey'],
+        serialNumber = map['serialNumber'],
+        humanReference = map['humanReference'];
 
   Asset.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data(), reference: snapshot.reference);

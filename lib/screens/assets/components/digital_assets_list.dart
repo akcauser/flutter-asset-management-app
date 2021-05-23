@@ -1,5 +1,6 @@
 import 'package:admin/models/Asset.dart';
 import 'package:admin/models/User.dart';
+import 'package:admin/responsive.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -49,27 +50,32 @@ class _DigitalAssetsListState extends State<DigitalAssetsList> {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: DataTable(
-                    horizontalMargin: 0,
-                    columnSpacing: defaultPadding,
-                    columns: [
-                      DataColumn(
-                        label: Text("Name"),
-                      ),
-                      DataColumn(
-                        label: Text("Type"),
-                      ),
-                      DataColumn(
-                        label: Text("License Key"),
-                      ),
-                      DataColumn(
-                        label: Text("Employee"),
-                      ),
-                      DataColumn(
-                        label: Text("Time"),
-                      ),
-                    ],
-                    rows: _createRows(snapshot.data),
+                  child: SingleChildScrollView(
+                    scrollDirection: Responsive.isMobile(context)
+                        ? Axis.horizontal
+                        : Axis.vertical,
+                    child: DataTable(
+                      horizontalMargin: 0,
+                      columnSpacing: defaultPadding,
+                      columns: [
+                        DataColumn(
+                          label: Text("Name"),
+                        ),
+                        DataColumn(
+                          label: Text("Type"),
+                        ),
+                        DataColumn(
+                          label: Text("License Key"),
+                        ),
+                        DataColumn(
+                          label: Text("Employee"),
+                        ),
+                        DataColumn(
+                          label: Text("Time"),
+                        ),
+                      ],
+                      rows: _createRows(snapshot.data),
+                    ),
                   ),
                 ),
               ],
@@ -121,7 +127,7 @@ DataRow _createRow(DocumentSnapshot documentSnapshot) {
         ),
       ),
       DataCell(Text(asset.type)),
-      DataCell(Text(asset.licenseKey ?? '-')),
+      DataCell(Text(asset.licenseKey ?? "-")),
       DataCell(
         StreamBuilder<DocumentSnapshot>(
             stream: asset.userReference.snapshots(),
