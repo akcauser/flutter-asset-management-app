@@ -114,7 +114,12 @@ class _SideMenuState extends State<SideMenu> {
                 DrawerListTile(
                   title: "My Request",
                   svgSrc: "assets/icons/menu_tran.svg",
-                  press: () {},
+                  press: () {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      routes["my_requests"],
+                    );
+                  },
                 ),
               ],
             ),
