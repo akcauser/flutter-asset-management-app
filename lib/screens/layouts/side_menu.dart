@@ -33,7 +33,6 @@ class _SideMenuState extends State<SideMenu> {
           .where('role', isEqualTo: "Admin")
           .get()
           .then((snapshot) {
-        print('test');
         setState(() {
           isAdmin = true;
         });
@@ -147,7 +146,12 @@ class _SideMenuState extends State<SideMenu> {
                 DrawerListTile(
                   title: "My Profile",
                   svgSrc: "assets/icons/menu_tran.svg",
-                  press: () {},
+                  press: () {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      routes["my_profile"],
+                    );
+                  },
                 ),
               ],
             ),
