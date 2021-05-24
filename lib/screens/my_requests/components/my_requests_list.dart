@@ -128,12 +128,15 @@ DataRow _createRow(DocumentSnapshot documentSnapshot) {
       DataCell(
         Row(
           children: [
-            IconButton(
-              icon: Icon(Icons.delete),
-              color: Colors.red,
-              onPressed: () {
-                deleteItem(request.reference.id);
-              },
+            Visibility(
+              visible: request.status == "Pending",
+              child: IconButton(
+                icon: Icon(Icons.delete),
+                color: Colors.red,
+                onPressed: () {
+                  deleteItem(request.reference.id);
+                },
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: defaultPadding),

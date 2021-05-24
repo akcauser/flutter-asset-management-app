@@ -1,5 +1,7 @@
+import 'package:admin/models/Asset.dart';
 import 'package:admin/models/Request.dart';
 import 'package:admin/models/User.dart' as MyUser;
+import 'package:admin/models/User.dart';
 import 'package:admin/responsive.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +76,7 @@ class _RequestsListState extends State<RequestsList> {
                           label: Text("Action"),
                         ),
                       ],
-                      rows: _createRows(snapshot.data),
+                      rows: _createRows(snapshot.data, context),
                     ),
                   ),
                 ),
@@ -85,19 +87,155 @@ class _RequestsListState extends State<RequestsList> {
   }
 }
 
-List<DataRow> _createRows(QuerySnapshot snapshot) {
+List<DataRow> _createRows(QuerySnapshot snapshot, BuildContext context) {
   List<DataRow> newList =
       snapshot.docs.map((DocumentSnapshot documentSnapshot) {
-    return _createRow(documentSnapshot);
+    return _createRow(documentSnapshot, context);
   }).toList();
 
   return newList;
 }
 
-DataRow _createRow(DocumentSnapshot documentSnapshot) {
+DataRow _createRow(DocumentSnapshot documentSnapshot, BuildContext context) {
   final _formkey = GlobalKey<FormState>();
   CollectionReference requestsCollection =
       FirebaseFirestore.instance.collection('requests');
+  CollectionReference assetsCollection =
+      FirebaseFirestore.instance.collection('assets');
+  CollectionReference usersCollection =
+      FirebaseFirestore.instance.collection('users');
+
+  Future<void> addItem(Asset asset) {
+    var data = {
+      'name': asset.name,
+      'type': asset.type,
+      'userReference': asset.userReference,
+      'createdAt': asset.createdAt,
+    };
+    if (asset.type == "Physical") {
+      data.putIfAbsent("serialNumber", () => asset.serialNumber);
+    } else if (asset.type == "Digital") {
+      data.putIfAbsent("licenseKey", () => asset.licenseKey);
+    } else {
+      data.putIfAbsent("humanReference", () => asset.humanReference);
+    }
+
+    return assetsCollection
+        .add(data)
+        .then((value) => print('item added'))
+        .catchError((error) => print('error occured'));
+  }
+
+  var _selectedHuman;
+  var _users = List<DropdownMenuItem>();
+  _loadUsers() {
+    usersCollection.get().then((querySnapshot) {
+      querySnapshot.docs.forEach((result) {
+        _users.add(DropdownMenuItem(
+          child: Text(User.fromSnapshot(result).name),
+          value: User.fromSnapshot(result).reference,
+        ));
+      });
+    });
+  }
+
+  _loadUsers();
+
+  Future<String> createAlertDialog(Request request) {
+    TextEditingController _physicalAssetSerialNumberFieldController =
+        new TextEditingController();
+    TextEditingController _digitalAssetLicenseKeyFieldController =
+        new TextEditingController();
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'Assign New Asset',
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          content: Form(
+            key: _formkey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Visibility(
+                    visible: request.type == "Physical",
+                    child: TextFormField(
+                      controller: _physicalAssetSerialNumberFieldController,
+                      decoration: InputDecoration(
+                        hintText: "Enter serial number",
+                        border: InputBorder.none,
+                      ),
+                      validator: (value) {
+                        if (request.type == 'Physical' && value.isEmpty) {
+                          return "Please enter serial number";
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: request.type == "Digital",
+                    child: TextFormField(
+                      controller: _digitalAssetLicenseKeyFieldController,
+                      decoration: InputDecoration(
+                        hintText: "Enter license key",
+                        border: InputBorder.none,
+                      ),
+                      validator: (value) {
+                        if (request.type == 'Physical' && value.isEmpty) {
+                          return "Please enter license key";
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: request.type == "Human",
+                    child: DropdownButtonFormField(
+                      items: _users,
+                      value: _selectedHuman,
+                      hint: Text("Human"),
+                      onChanged: (value) {
+                        _selectedHuman = value;
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            MaterialButton(
+              color: Colors.green,
+              onPressed: () {
+                if (_formkey.currentState.validate()) {
+                  Asset asset = new Asset(
+                    request.name,
+                    request.type,
+                    _physicalAssetSerialNumberFieldController.text.toString(),
+                    request.userReference,
+                    _digitalAssetLicenseKeyFieldController.text.toString(),
+                    _selectedHuman,
+                  );
+                  addItem(asset);
+                  // Alert dialog close
+                  Navigator.of(context).pop();
+                }
+              },
+              elevation: 5.0,
+              child: Text('Assing'),
+            )
+          ],
+        );
+      },
+    );
+  }
 
   Future<void> rejectItem(itemReference) {
     return requestsCollection
@@ -121,19 +259,25 @@ DataRow _createRow(DocumentSnapshot documentSnapshot) {
       DataCell(
         Row(
           children: [
-            IconButton(
-              icon: Icon(Icons.close),
-              color: Colors.yellow,
-              onPressed: () {
-                rejectItem(request.reference.id);
-              },
+            Visibility(
+              visible: request.status == "Pending",
+              child: IconButton(
+                icon: Icon(Icons.close),
+                color: Colors.yellow,
+                onPressed: () {
+                  rejectItem(request.reference.id);
+                },
+              ),
             ),
-            IconButton(
-              icon: Icon(Icons.check),
-              color: Colors.green,
-              onPressed: () {
-                acceptItem(request.reference.id);
-              },
+            Visibility(
+              visible: request.status == "Pending",
+              child: IconButton(
+                icon: Icon(Icons.check),
+                color: Colors.green,
+                onPressed: () {
+                  acceptItem(request.reference.id);
+                },
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
@@ -154,7 +298,7 @@ DataRow _createRow(DocumentSnapshot documentSnapshot) {
       DataCell(
         ElevatedButton.icon(
           onPressed: () {
-            //assignRequestAsAsset(request);
+            createAlertDialog(request);
           },
           icon: Icon(Icons.assignment),
           label: Text("Assign"),

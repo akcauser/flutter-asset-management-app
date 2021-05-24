@@ -86,9 +86,6 @@ class _MyHumanAssetsListState extends State<MyHumanAssetsList> {
                           label: Text("Human"),
                         ),
                         DataColumn(
-                          label: Text("Employee"),
-                        ),
-                        DataColumn(
                           label: Text("Time"),
                         ),
                       ],
@@ -155,22 +152,6 @@ DataRow _createRow(DocumentSnapshot documentSnapshot) {
                 return Text("-");
               }
 
-              if (!snapshot.hasData ||
-                  snapshot.connectionState == ConnectionState.waiting)
-                return CircularProgressIndicator();
-
-              return Text(MyUser.User.fromSnapshot(snapshot.data).name);
-            }),
-      ),
-      DataCell(
-        StreamBuilder<DocumentSnapshot>(
-            stream: asset.userReference.snapshots(),
-            builder: (BuildContext context,
-                AsyncSnapshot<DocumentSnapshot> snapshot) {
-              if (snapshot.hasError) {
-                print(snapshot.error);
-                return Text("-");
-              }
               if (!snapshot.hasData ||
                   snapshot.connectionState == ConnectionState.waiting)
                 return CircularProgressIndicator();
