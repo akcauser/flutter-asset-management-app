@@ -32,7 +32,9 @@ class _MyDigitalAssetsListState extends State<MyDigitalAssetsList> {
           .where('email', isEqualTo: email)
           .get()
           .then((snapshot) {
-        _userReference = snapshot.docs.first.reference;
+        setState(() {
+          _userReference = snapshot.docs.first.reference;
+        });
       });
     }
   }
@@ -42,7 +44,7 @@ class _MyDigitalAssetsListState extends State<MyDigitalAssetsList> {
     return StreamBuilder<QuerySnapshot>(
         stream: assetsCollection
             .where('type', isEqualTo: 'Digital')
-            .where('userReference', isEqualTo: _userReference)
+            .where('userReference', isEqualTo: _userReference ?? "")
             .snapshots(includeMetadataChanges: true),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {

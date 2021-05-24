@@ -28,26 +28,24 @@ class _ProfileDetailState extends State<ProfileDetail> {
   var _userEmail = "";
   var _userRole = "";
   Future<void> getData() async {
-    do {
-      if (auth.currentUser != null) {
-        var email = auth.currentUser.email;
-        await FirebaseFirestore.instance
-            .collection('users')
-            .where('email', isEqualTo: email)
-            .get()
-            .then((querySnapshot) {
-          querySnapshot.docs.forEach((result) {
-            print("user detail initstate");
-            user = MyUser.User.fromSnapshot(result);
-            setState(() {
-              _userName = user.name;
-              _userEmail = user.email;
-              _userRole = user.role;
-            });
+    if (auth.currentUser != null) {
+      var email = auth.currentUser.email;
+      await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((result) {
+          print("user detail initstate");
+          user = MyUser.User.fromSnapshot(result);
+          setState(() {
+            _userName = user.name;
+            _userEmail = user.email;
+            _userRole = user.role;
           });
         });
-      }
-    } while (auth.currentUser == null);
+      });
+    }
   }
 
   @override

@@ -32,7 +32,9 @@ class _MyRequestsListState extends State<MyRequestsList> {
           .where('email', isEqualTo: email)
           .get()
           .then((snapshot) {
-        _userReference = snapshot.docs.first.reference;
+        setState(() {
+          _userReference = snapshot.docs.first.reference;
+        });
       });
     }
   }
@@ -42,7 +44,7 @@ class _MyRequestsListState extends State<MyRequestsList> {
     return StreamBuilder<QuerySnapshot>(
         stream: requestsCollection
             .where('type', whereIn: ['Digital', 'Physical', 'Human'])
-            .where('userReference', isEqualTo: _userReference)
+            .where('userReference', isEqualTo: _userReference ?? "")
             .snapshots(includeMetadataChanges: true),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {

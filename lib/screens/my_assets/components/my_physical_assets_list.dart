@@ -1,5 +1,4 @@
 import 'package:admin/models/Asset.dart';
-import 'package:admin/models/User.dart' as MyUser;
 import 'package:admin/responsive.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,7 +31,9 @@ class _MyPhysicalAssetsListState extends State<MyPhysicalAssetsList> {
           .where('email', isEqualTo: email)
           .get()
           .then((snapshot) {
-        _userReference = snapshot.docs.first.reference;
+        setState(() {
+          _userReference = snapshot.docs.first.reference;
+        });
       });
     }
   }
@@ -42,7 +43,7 @@ class _MyPhysicalAssetsListState extends State<MyPhysicalAssetsList> {
     return StreamBuilder<QuerySnapshot>(
       stream: assetsCollection
           .where('type', isEqualTo: 'Physical')
-          .where('userReference', isEqualTo: _userReference)
+          .where('userReference', isEqualTo: _userReference ?? "")
           .snapshots(includeMetadataChanges: true),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
