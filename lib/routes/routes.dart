@@ -2,6 +2,7 @@ import 'package:admin/screens/assets/assets_screen.dart';
 import 'package:admin/screens/my_assets/my_assets_screen.dart';
 import 'package:admin/screens/auth/login_screen.dart';
 import 'package:admin/screens/my_requests/my_requests_screen.dart';
+import 'package:admin/screens/requests/requests_screen.dart';
 import 'package:admin/screens/users/users_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,7 @@ final routes = <String, String>{
   "assets": "/assets",
   "my_assets": "/my_assets",
   "my_requests": "/my_requests",
+  "requests": "/requests",
 };
 
 getRoutes() {
@@ -25,5 +27,6 @@ getRoutes() {
     routes["assets"]: (context) => new AssetsScreen(),
     routes["my_assets"]: (context) => new MyAssetsScreen(),
     routes["my_requests"]: (context) => new MyRequestsScreen(),
+    routes["requests"]: (context) => new RequestsScreen(),
   };
 }

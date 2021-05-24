@@ -107,7 +107,12 @@ class _SideMenuState extends State<SideMenu> {
                   child: DrawerListTile(
                     title: "Request List",
                     svgSrc: "assets/icons/menu_tran.svg",
-                    press: () {},
+                    press: () {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        routes["requests"],
+                      );
+                    },
                   ),
                   visible: isAdmin,
                 ),
