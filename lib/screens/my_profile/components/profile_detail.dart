@@ -80,10 +80,11 @@ class _ProfileDetailState extends State<ProfileDetail> {
             child: Row(
               children: [
                 SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: SvgPicture.asset("assets/icons/media.svg"),
-                ),
+                    height: 20,
+                    width: 20,
+                    child: Icon(
+                      Icons.account_circle,
+                    )),
                 Expanded(
                   child: Padding(
                     padding:
@@ -125,7 +126,9 @@ class _ProfileDetailState extends State<ProfileDetail> {
                 SizedBox(
                   height: 20,
                   width: 20,
-                  child: SvgPicture.asset("assets/icons/media.svg"),
+                  child: Icon(
+                    Icons.email,
+                  ),
                 ),
                 Expanded(
                   child: Padding(
@@ -168,7 +171,9 @@ class _ProfileDetailState extends State<ProfileDetail> {
                 SizedBox(
                   height: 20,
                   width: 20,
-                  child: SvgPicture.asset("assets/icons/media.svg"),
+                  child: Icon(
+                    Icons.group,
+                  ),
                 ),
                 Expanded(
                   child: Padding(
