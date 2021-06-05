@@ -3,7 +3,6 @@ import 'package:admin/models/AssetType.dart';
 import 'package:admin/models/User.dart';
 import 'package:admin/screens/assets/components/digital_assets_list.dart';
 import 'package:admin/screens/assets/components/physical_assets_list.dart';
-import 'package:admin/screens/dashboard/components/storage_details.dart';
 import 'package:admin/screens/layouts/app_layout.dart';
 import 'package:admin/screens/assets/components/human_assets_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -239,17 +238,11 @@ class _AssetsScreenState extends State<AssetsScreen> {
                 HumanAssetsList(),
                 if (Responsive.isMobile(context))
                   SizedBox(height: defaultPadding),
-                if (Responsive.isMobile(context)) StarageDetails(),
               ],
             ),
           ),
           if (!Responsive.isMobile(context)) SizedBox(width: defaultPadding),
           // On Mobile means if the screen is less than 850 we dont want to show it
-          if (!Responsive.isMobile(context))
-            Expanded(
-              flex: 2,
-              child: StarageDetails(),
-            ),
         ],
       ),
     );

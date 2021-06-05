@@ -75,7 +75,7 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            'Assign New Asset',
+            'Request New Asset',
             style: TextStyle(
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
@@ -127,7 +127,7 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
                 }
               },
               elevation: 5.0,
-              child: Text('Assing'),
+              child: Text('Send'),
             )
           ],
         );
@@ -157,7 +157,7 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
                     createAlertDialog(context);
                   },
                   icon: Icon(Icons.add),
-                  label: Text("Assign New Asset"),
+                  label: Text("Request New Asset"),
                 ),
                 SizedBox(height: defaultPadding),
                 MyRequestsList(),

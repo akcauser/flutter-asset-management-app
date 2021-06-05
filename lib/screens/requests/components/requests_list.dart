@@ -291,8 +291,11 @@ DataRow _createRow(DocumentSnapshot documentSnapshot, BuildContext context) {
       DataCell(Text(
         request.status,
         style: TextStyle(
-          backgroundColor:
-              request.status == "Accepted" ? Colors.green : Colors.red,
+          backgroundColor: request.status == "Accepted"
+              ? Colors.green
+              : request.status == "Pending"
+                  ? Colors.orange
+                  : Colors.red,
         ),
       )),
       DataCell(

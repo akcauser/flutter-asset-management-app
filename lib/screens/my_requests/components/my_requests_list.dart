@@ -153,8 +153,11 @@ DataRow _createRow(DocumentSnapshot documentSnapshot) {
         Text(
           request.status,
           style: TextStyle(
-            backgroundColor:
-                request.status == "Accepted" ? Colors.green : Colors.red,
+            backgroundColor: request.status == "Accepted"
+                ? Colors.green
+                : request.status == "Pending"
+                    ? Colors.orange
+                    : Colors.red,
           ),
         ),
       ),
