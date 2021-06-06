@@ -1,5 +1,35 @@
 # Fırtınalar Asset Management Tool
- 
+
+# Physical Assets
+
+A physical asset is an item of economic, commercial, or exchange value that has a material existence. Physical assets are also known as tangible assets. For most businesses, physical assets usually refer to properties, equipment, and inventory.
+
+# Digital Assets
+
+A digital asset is anything that exists in a digital format and comes with the right to use. Data that do not possess that right are not considered assets.
+
+# Human Assets
+
+Human capital is the stock of habits, knowledge, social and personality attributes (including creativity) embodied in the ability to perform labour so as to produce economic value.
+
+Human capital is unique and differs from any other capital. It is needed by companies to achieve goals, develop and remain innovative. Companies can invest in human capital, for example, through education and training, enabling improved levels of quality and production.
+
+# Frontend
+
+* Flutter
+  * IOS 
+  * Android
+  * Web
+  * Desktop
+
+# Backend 
+
+* Firebase
+  * Authentication
+  * Firestore
+  * Storage
+
+
 * Admin Dashboard
 ![GitHub Logo](doc/images/web/admin_dashboard.png)
 <img src="doc/images/tablet/admin_dashboard.png" alt="drawing" width="300"/>
