@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 
-class Chart extends StatelessWidget {
-  const Chart({
+class AssetChart extends StatelessWidget {
+  const AssetChart({
     Key key,
   }) : super(key: key);
 
@@ -28,14 +28,13 @@ class Chart extends StatelessWidget {
               children: [
                 SizedBox(height: defaultPadding),
                 Text(
-                  "29.1",
+                  "47",
                   style: Theme.of(context).textTheme.headline4.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
                         height: 0.5,
                       ),
                 ),
-                Text("of 128GB")
               ],
             ),
           ),
@@ -48,32 +47,20 @@ class Chart extends StatelessWidget {
 List<PieChartSectionData> paiChartSelectionDatas = [
   PieChartSectionData(
     color: primaryColor,
-    value: 25,
+    value: 11,
     showTitle: false,
-    radius: 25,
+    radius: 11,
   ),
   PieChartSectionData(
     color: Color(0xFF26E5FF),
-    value: 20,
+    value: 15,
     showTitle: false,
-    radius: 22,
+    radius: 15,
   ),
   PieChartSectionData(
     color: Color(0xFFFFCF26),
-    value: 10,
+    value: 21,
     showTitle: false,
-    radius: 19,
-  ),
-  PieChartSectionData(
-    color: Color(0xFFEE2727),
-    value: 15,
-    showTitle: false,
-    radius: 16,
-  ),
-  PieChartSectionData(
-    color: primaryColor.withOpacity(0.1),
-    value: 25,
-    showTitle: false,
-    radius: 13,
+    radius: 21,
   ),
 ];

@@ -3,8 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../constants.dart';
 
-class StorageInfoCard extends StatelessWidget {
-  const StorageInfoCard({
+class AssetInfoCard extends StatelessWidget {
+  const AssetInfoCard({
     Key key,
     @required this.title,
     @required this.svgSrc,
@@ -45,7 +45,7 @@ class StorageInfoCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    "$numOfFiles Files",
+                    "$numOfFiles Request Accepted",
                     style: Theme.of(context)
                         .textTheme
                         .caption

@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('AlertDialog Title'),
+            title: const Text('Error'),
             content: SingleChildScrollView(
               child: ListBody(
                 children: const <Widget>[

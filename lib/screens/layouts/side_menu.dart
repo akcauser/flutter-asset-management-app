@@ -63,7 +63,9 @@ class _SideMenuState extends State<SideMenu> {
             DrawerListTile(
               title: "My Dashboard",
               svgSrc: "assets/icons/menu_dashbord.svg",
-              press: () {},
+              press: () {
+                Navigator.pushReplacementNamed(context, routes["my_dashboard"]);
+              },
             ),
             ExpansionTile(
               title: Text("Assets"),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
-import 'chart.dart';
-import 'storage_info_card.dart';
+import 'asset_chart.dart';
+import 'asset_info_card.dart';
 
-class StarageDetails extends StatelessWidget {
-  const StarageDetails({
+class AssetCounts extends StatelessWidget {
+  const AssetCounts({
     Key key,
   }) : super(key: key);
 
@@ -21,37 +21,31 @@ class StarageDetails extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Storage Details",
+            "Asset Counts",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
           ),
           SizedBox(height: defaultPadding),
-          Chart(),
-          StorageInfoCard(
+          AssetChart(),
+          AssetInfoCard(
             svgSrc: "assets/icons/Documents.svg",
-            title: "Documents Files",
-            amountOfFiles: "1.3GB",
-            numOfFiles: 1328,
+            title: "Physical Assets",
+            amountOfFiles: "2",
+            numOfFiles: 3,
           ),
-          StorageInfoCard(
+          AssetInfoCard(
             svgSrc: "assets/icons/media.svg",
-            title: "Media Files",
-            amountOfFiles: "15.3GB",
-            numOfFiles: 1328,
+            title: "Digital Assets",
+            amountOfFiles: "0",
+            numOfFiles: 2,
           ),
-          StorageInfoCard(
+          AssetInfoCard(
             svgSrc: "assets/icons/folder.svg",
-            title: "Other Files",
-            amountOfFiles: "1.3GB",
-            numOfFiles: 1328,
-          ),
-          StorageInfoCard(
-            svgSrc: "assets/icons/unknown.svg",
-            title: "Unknown",
-            amountOfFiles: "1.3GB",
-            numOfFiles: 140,
+            title: "Human Asset",
+            amountOfFiles: "1",
+            numOfFiles: 2,
           ),
         ],
       ),

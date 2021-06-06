@@ -1,6 +1,7 @@
 import 'package:admin/screens/assets/assets_screen.dart';
 import 'package:admin/screens/my_assets/my_assets_screen.dart';
 import 'package:admin/screens/auth/login_screen.dart';
+import 'package:admin/screens/my_dashboard/my_dashboard_screen.dart';
 import 'package:admin/screens/my_profile/my_profile_screen.dart';
 import 'package:admin/screens/my_requests/my_requests_screen.dart';
 import 'package:admin/screens/requests/requests_screen.dart';
@@ -19,6 +20,7 @@ final routes = <String, String>{
   "my_requests": "/my_requests",
   "requests": "/requests",
   "my_profile": "/my_profile",
+  "my_dashboard": "/my_dashboard",
 };
 
 getRoutes() {
@@ -31,5 +33,6 @@ getRoutes() {
     routes["my_requests"]: (context) => new MyRequestsScreen(),
     routes["requests"]: (context) => new RequestsScreen(),
     routes["my_profile"]: (context) => new MyProfileScreen(),
+    routes["my_dashboard"]: (context) => new MyDashboardScreen(),
   };
 }
