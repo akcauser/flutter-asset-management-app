@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -14,44 +16,44 @@ class AssetChart extends StatefulWidget {
 }
 
 class _AssetChartState extends State<AssetChart> {
-  var _totalRequestCount = 0;
-  var _physicalRequestCount = 1;
-  var _digitalRequestCount = 1;
-  var _humanRequestCount = 1;
+  var _totalAssetCount = 0;
+  var _physicalAssetCount = 1.0;
+  var _digitalAssetCount = 1.0;
+  var _humanAssetCount = 1.0;
   @override
   void initState() {
     super.initState();
 
-    FirebaseFirestore.instance.collection('requests').get().then((snapshot) {
+    FirebaseFirestore.instance.collection('assets').get().then((snapshot) {
       setState(() {
-        _totalRequestCount = snapshot.size;
+        _totalAssetCount = snapshot.size;
       });
     });
     FirebaseFirestore.instance
-        .collection('requests')
+        .collection('assets')
         .where('type', isEqualTo: 'Physical')
         .get()
         .then((snapshot) {
       setState(() {
-        _physicalRequestCount = snapshot.size;
+        _physicalAssetCount = snapshot.size.toDouble();
       });
     });
     FirebaseFirestore.instance
-        .collection('requests')
+        .collection('assets')
         .where('type', isEqualTo: 'Digital')
         .get()
         .then((snapshot) {
       setState(() {
-        _digitalRequestCount = snapshot.size;
+        _digitalAssetCount = snapshot.size.toDouble();
       });
     });
     FirebaseFirestore.instance
-        .collection('requests')
+        .collection('assets')
         .where('type', isEqualTo: 'Human')
         .get()
         .then((snapshot) {
       setState(() {
-        _humanRequestCount = snapshot.size;
+        _humanAssetCount = snapshot.size.toDouble();
       });
     });
   }
@@ -70,21 +72,24 @@ class _AssetChartState extends State<AssetChart> {
               sections: [
                 PieChartSectionData(
                   color: primaryColor,
-                  value: _physicalRequestCount.toDouble(),
-                  showTitle: false,
-                  radius: _physicalRequestCount.toDouble(),
+                  showTitle: true,
+                  value: 1,
+                  title: _physicalAssetCount.toString(),
+                  radius: 2,
                 ),
                 PieChartSectionData(
                   color: Color(0xFF26E5FF),
-                  value: _digitalRequestCount.toDouble(),
-                  showTitle: false,
-                  radius: _digitalRequestCount.toDouble(),
+                  showTitle: true,
+                  value: 1,
+                  title: _digitalAssetCount.toString(),
+                  radius: 2,
                 ),
                 PieChartSectionData(
                   color: Color(0xFFFFCF26),
-                  value: _humanRequestCount.toDouble(),
-                  showTitle: false,
-                  radius: _humanRequestCount.toDouble(),
+                  showTitle: true,
+                  value: 1,
+                  title: _humanAssetCount.toString(),
+                  radius: 2,
                 ),
               ],
             ),
@@ -95,7 +100,7 @@ class _AssetChartState extends State<AssetChart> {
               children: [
                 SizedBox(height: defaultPadding),
                 Text(
-                  _totalRequestCount.toString(),
+                  _totalAssetCount.toString(),
                   style: Theme.of(context).textTheme.headline4.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
