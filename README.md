@@ -61,9 +61,23 @@
 
 
 ## Firebase
+
+### Asset
 ![GitHub Logo](doc/images/firebase/asset.png)
+
+### Request
 ![GitHub Logo](doc/images/firebase/request.png)
+
+### User
 ![GitHub Logo](doc/images/firebase/user.png)
+
+## Diagrams
+
+### Class
+![GitHub Logo](doc/images/diagrams/class.jpg)
+
+### Use Case
+![GitHub Logo](doc/images/diagrams/use_case.jpg)
 
 # Git Using Guide
 
