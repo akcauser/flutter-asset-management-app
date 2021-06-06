@@ -1,31 +1,71 @@
-# Responsive Admin Panel or Dashboard - Flutter UI
+# Fırtınalar Asset Management Tool 
+* Admin Dashboard
+![GitHub Logo](doc/images/web/admin_dashboard.png)
+<img src="doc/images/tablet/admin_dashboard.png" alt="drawing" width="300"/>
+<img src="doc/images/mobile/admin_dashboard.png" alt="drawing" width="200"/>
 
-## [Live Preview](https://abuanwar072.github.io/Flutter-Responsive-Admin-Panel-or-Dashboard/#/)
+* Add new user
+![GitHub Logo](doc/images/web/add_new_user.png)
+<img src="doc/images/tablet/add_new_user.png" alt="drawing" width="300"/>
+<img src="doc/images/mobile/add_new_user.png" alt="drawing" width="200"/>
 
-**Packages we are using:**
+* Assign Asset
+![GitHub Logo](doc/images/web/assign_asset.png)
+<img src="doc/images/tablet/assign_asset.png" alt="drawing" width="300"/>
+<img src="doc/images/mobile/assign_asset.png" alt="drawing" width="200"/>
 
-- flutter_svg: [link](https://pub.dev/packages/flutter_svg)
-- google_fonts: [link](https://pub.dev/packages/google_fonts)
-- provider: [link](https://pub.dev/packages/provider)
+* Assign Asset From Request
+![GitHub Logo](doc/images/web/assign_request.png)
+<img src="doc/images/tablet/assign_request.png" alt="drawing" width="300"/>
+<img src="doc/images/mobile/assign_request.png" alt="drawing" width="200"/>
 
-**Fonts**
+* Assigned Assets
+![GitHub Logo](doc/images/web/assigned_assets.png)
+<img src="doc/images/tablet/assigned_assets.png" alt="drawing" width="300"/>
+<img src="doc/images/mobile/assigned_assets.png" alt="drawing" width="200"/>
 
-- Poppins [link](https://fonts.google.com/specimen/Poppins)
+* Login
+![GitHub Logo](doc/images/web/login.png)
+<img src="doc/images/tablet/admin_dashboard.png" alt="drawing" width="300"/>
+<img src="doc/images/mobile/admin_dashboard.png" alt="drawing" width="200"/>
 
-## [Watch it on YouTube](https://youtu.be/_uOgXpEHNbc)
+* My Assets
+![GitHub Logo](doc/images/web/my_assets.png)
+<img src="doc/images/tablet/my_assets.png" alt="drawing" width="300"/>
+<img src="doc/images/mobile/my_assets.png" alt="drawing" width="200"/>
 
-On Flutter V2.* web officially supported on a stable branch. Today I share an Admin panel or you can call it dashboard UI build with flutter.  Now you can build your app dashboard using flutter. This dashboard contains almost everything that you need like a chart, table, nice small card for showing info. 
-It works perfectly on the Web, macOS app, Tablet also on both Android and iOS phones. It's time to code once run everywhere. Yeah, Flutter web is not SEO friendly but we don't need SEO for the admin panel.
+* My Dashboard
+![GitHub Logo](doc/images/web/my_dashboard.png)
+<img src="doc/images/tablet/my_dashboard.png" alt="drawing" width="300"/>
+<img src="doc/images/mobile/my_dashboard.png" alt="drawing" width="200"/>
 
-### Responsive Admin Panel or Dashboard Final UI
+* My Requests
+![GitHub Logo](doc/images/web/my_requests.png)
+<img src="doc/images/tablet/my_requests.png" alt="drawing" width="300"/>
+<img src="doc/images/mobile/my_requests.png" alt="drawing" width="200"/>
 
-![Preview](/gif.gif)
+* Request List
+![GitHub Logo](doc/images/web/request_list.png)
+<img src="doc/images/tablet/request_list.png" alt="drawing" width="300"/>
+<img src="doc/images/mobile/request_list.png" alt="drawing" width="200"/>
 
-![App UI](/ui.png)
+* Request New Asset From Admin
+![GitHub Logo](doc/images/web/request_new_asset.png)
+<img src="doc/images/tablet/request_new_asset.png" alt="drawing" width="300"/>
+<img src="doc/images/mobile/request_new_asset.png" alt="drawing" width="200"/>
 
-## This change did by main branch
+* User List
+![GitHub Logo](doc/images/web/user_list.png)
+<img src="doc/images/tablet/user_list.png" alt="drawing" width="300"/>
+<img src="doc/images/mobile/user_list.png" alt="drawing" width="200"/>
 
-# Git Commands 
+
+## Firebase
+![GitHub Logo](doc/images/firebase/asset.png)
+![GitHub Logo](doc/images/firebase/request.png)
+![GitHub Logo](doc/images/firebase/user.png)
+
+# Git Using Guide
 
 - git pull
 - git checkout -b branch-name (branch name can be call feature name)
